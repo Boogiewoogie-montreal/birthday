@@ -10,6 +10,7 @@
   left: 0;
   bottom: 0;
   right: 0;
+  pointer-events: none !important;
 }
 
 /* Transparent Overlay */
@@ -22,6 +23,7 @@
   width: 100%;
   height: 100%;
   background-color: rgba(0,0,0,0.3);
+  pointer-events: none !important;
 }
 
 /* :not(:required) hides these rules from IE9 and below */

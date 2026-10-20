@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>A Message for Malkin 🐱🎂</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="theme-color" content="#FDF3E5">
+
+  <!-- Preconnect & Google Fonts (Gaegu, Patrick Hand, Caveat) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Caveat:wght@700&family=Gaegu:wght@400;700&family=Patrick+Hand&display=swap"
+    rel="stylesheet">
+
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+  <!-- =====================================================================
+       SVG DEFS FOR STOP-MOTION CRAYON "BOILING LINE" JITTER
+       ===================================================================== -->
+  <svg style="position: absolute; width: 0; height: 0; overflow: hidden;" aria-hidden="true" version="1.1">
+    <defs>
+      <!-- Frame 1 -->
+      <filter id="crayon-boil-1" x="-10%" y="-10%" width="120%" height="120%">
+        <feTurbulence type="fractalNoise" baseFrequency="0.045" numOctaves="3" result="noise" seed="3" />
+        <feDisplacementMap in="SourceGraphic" in2="noise" scale="3.2" xChannelSelector="R" yChannelSelector="G" />
+      </filter>
+      <!-- Frame 2 -->
+      <filter id="crayon-boil-2" x="-10%" y="-10%" width="120%" height="120%">
+        <feTurbulence type="fractalNoise" baseFrequency="0.045" numOctaves="3" result="noise" seed="47" />
+        <feDisplacementMap in="SourceGraphic" in2="noise" scale="3.2" xChannelSelector="R" yChannelSelector="G" />
+      </filter>
+      <!-- Frame 3 -->
+      <filter id="crayon-boil-3" x="-10%" y="-10%" width="120%" height="120%">
+        <feTurbulence type="fractalNoise" baseFrequency="0.045" numOctaves="3" result="noise" seed="92" />
+        <feDisplacementMap in="SourceGraphic" in2="noise" scale="3.2" xChannelSelector="R" yChannelSelector="G" />
+      </filter>
+    </defs>
+  </svg>
+
+  <!-- =====================================================================
+       HAND-DRAWN CRAYON LOADER
+       ===================================================================== -->
+  <div class="crayon-loader" id="crayonLoader">
+    <svg class="loader-pencil boiling" width="48" height="48" viewBox="0 0 50 50">
+      <path d="M 12 38 L 8 42 L 14 42 L 38 18 L 32 12 Z" fill="#E63946" stroke="#2D2A26" stroke-width="2" />
+      <polygon points="8,42 6,44 14,42" fill="#2D2A26" />
+      <rect x="34" y="8" width="8" height="6" fill="#F4A261" stroke="#2D2A26" stroke-width="2"
+        transform="rotate(45 38 11)" />
+    </svg>
+    <div class="loader-text">Sharpening crayons... ✏️</div>
+  </div>
+
+  <!-- =====================================================================
+       TAP TO BEGIN SCREEN (BROWSER AUTOPLAY COMPLIANCE)
+       ===================================================================== -->
+  <div class="start-gate" id="startGate">
+    <div class="start-card boiling">
+      <img src="../card_cats_top.png" class="start-mascot-img" alt="Cute Cats">
+      <div class="start-title">Hey Malkin! 🐱</div>
+      <div class="start-subtitle">Someone made something special for you...</div>
+      <button class="big-start-btn" id="startBtn">
+        <span>Tap to Open</span> 🎂
+      </button>
+    </div>
+  </div>
+
+  <!-- =====================================================================
+       TOP CONTROLS (MUTE ONLY)
+       ===================================================================== -->
+  <div class="top-controls">
+    <button class="crayon-btn" id="btnBackToPage1" title="Back to Birthday Card">
+      <span class="btn-icon">⬅️</span>
+      <span class="btn-label">Back</span>
+    </button>
+    <button class="crayon-btn" id="muteBtn" title="Toggle Sound">
+      <span class="btn-icon">🔊</span>
+      <span class="btn-label">Sound</span>
+    </button>
+  </div>
+
+  <!-- =====================================================================
+       MAIN PAPER STAGE
+       ===================================================================== -->
+  <div class="paper-stage" id="paperStage">
+    <!-- Active Doodles (Cats, Balloons, Cakes, Stars) -->
+    <div class="doodle-area" id="doodleArea"></div>
+
+    <!-- Live Crayon Text Scenes -->
+    <div id="scenesContainer"></div>
+
+    <!-- Paper Wipe Transition Layer -->
+    <div class="wipe-overlay" id="wipeOverlay"></div>
+
+    <!-- Polaroid Photo Gallery Scrapbook (Plays after Crayon Lyric Intro) -->
+    <div class="photo-gallery-overlay" id="photoGalleryOverlay">
+      <!-- Floating Background Particles (Hearts, Stars, Cats, Petals) -->
+      <div class="gallery-floating-particles" id="galleryParticles"></div>
+
+      <!-- Fly-bys Layer (Rocket with Sparkle Trail, Paper Plane, Shooting Star) -->
+      <div class="gallery-flybys-layer" id="galleryFlybysLayer"></div>
+
+      <!-- Connecting SVG Path Line & Walking Cat Tracker -->
+      <svg class="connecting-path-svg" id="connectingPathSvg" aria-hidden="true">
+        <path class="connecting-path-line" id="connectingPathLine" d="" fill="none" stroke="#D4A373" stroke-width="2.5"
+          stroke-dasharray="6,8" stroke-linecap="round" />
+      </svg>
+      <div class="walking-cat-tracker" id="walkingCatTracker" title="Walking along memories">
+        <span class="tracker-icon">🐾</span>
+      </div>
+
+      <!-- Gallery Header -->
+      <div class="gallery-header">
+        <div class="gallery-badge boiling">✨ Special Memories ✨</div>
+        <h2 class="gallery-main-title">A Scrapbook of Malkin 💖</h2>
+        <p class="gallery-subtitle">Tap any photo to peek at the secret note on the back! 💌</p>
+      </div>
+
+      <!-- 8 Photo Frames Container (Rendered dynamically from GALLERY_CONFIG) -->
+      <div class="photos-scrapbook-stream" id="photosScrapbookStream"></div>
+
+      <!-- Grand Ending Section: Handwritten Letter Card -->
+      <div class="letter-section-wrapper" id="letterSectionWrapper">
+        <div class="letter-card-container boiling" id="letterCardContainer">
+          <div class="letter-washi-tape"></div>
+          <div class="letter-wax-seal">💖</div>
+          <div class="letter-postage-stamp">
+            <img src="../card_cats_top.png" alt="Cat Stamp">
+            <span class="letter-postmark">MALKIN • 2026</span>
+          </div>
+          <div class="letter-inner">
+            <h3 class="letter-heading" id="letterHeading">A letter for you, Malkin 💌</h3>
+            <div class="letter-body-text" id="letterBodyText"></div>
+            <div class="letter-signature" id="letterSignature">- [My name]</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Interactive Birthday Cake & Candle Blowout Section -->
+      <div class="cake-blowout-section" id="cakeBlowoutSection">
+        <div class="cake-blowout-card boiling">
+          <div class="cake-blowout-title">Make a Birthday Wish! 🌟</div>
+          <div class="interactive-cake-box" id="interactiveCakeBox">
+            <!-- Illustrated Cake with 3 Candles -->
+            <div class="blowout-cake">
+              <div class="blowout-candles">
+                <div class="blowout-candle candle-1">
+                  <div class="candle-flame flame-1"></div>
+                  <div class="candle-smoke smoke-1">💨</div>
+                  <div class="candle-body"></div>
+                </div>
+                <div class="blowout-candle candle-2">
+                  <div class="candle-flame flame-2"></div>
+                  <div class="candle-smoke smoke-2">💨</div>
+                  <div class="candle-body"></div>
+                </div>
+                <div class="blowout-candle candle-3">
+                  <div class="candle-flame flame-3"></div>
+                  <div class="candle-smoke smoke-3">💨</div>
+                  <div class="candle-body"></div>
+                </div>
+              </div>
+              <div class="blowout-cake-top"></div>
+              <div class="blowout-cake-middle"></div>
+              <div class="blowout-cake-bottom"></div>
+              <div class="blowout-cake-plate"></div>
+            </div>
+          </div>
+
+          <button class="blow-candles-btn" id="btnBlowCandles" title="Tap to blow out candles!">
+            <span>🌬️ Tap to Blow Out Candles!</span>
+          </button>
+
+          <!-- Grand Celebration Banner (Triggered upon blowout) -->
+          <div class="celebration-burst-banner" id="celebrationBurstBanner">
+            <div class="cheering-cats-row">
+              <img src="../cat.png" class="cheering-cat cheering-cat-left" alt="Cheering Cat">
+              <div class="birthday-queen-crown">👑</div>
+              <img src="../cat.png" class="cheering-cat cheering-cat-right" alt="Cheering Cat">
+            </div>
+            <h1 class="grand-birthday-heading">Happy Birthday Malkin! 🎉</h1>
+            <p class="final-heartfelt-line">Thank you for being you 💖</p>
+          </div>
+        </div>
+
+        <!-- Redesigned Ending Sequence: OUTSIDE and BELOW the card -->
+        <div class="ending-sequence-wrapper" id="endingSequenceWrapper" aria-live="polite">
+          <!-- Floating ambient background particles & aura glow -->
+          <div class="ending-ambient-glow" aria-hidden="true"></div>
+          <div class="ending-floating-elements" id="endingFloatingElements" aria-hidden="true"></div>
+
+          <!-- Step 1 & 2: "Did you like it?" Question & Interactive Buttons -->
+          <div class="ending-question-section" id="endingQuestionSection">
+            <div class="ending-question-badge">
+              <span class="ending-sparkle-icon">✨</span>
+              <h2 class="ending-question-heading" id="endingQuestionHeading">Did you like it? 🥹💖</h2>
+              <span class="ending-sparkle-icon">✨</span>
+            </div>
+
+            <div class="ending-interactive-stage">
+              <!-- Cat Character & Speech Bubble -->
+              <div class="ending-cat-companion" id="endingCatCompanion">
+                <div class="ending-speech-bubble" id="endingCatSpeechBubble">
+                  <span class="bubble-tail"></span>
+                  <span class="bubble-text" id="endingBubbleText">Tell me! 🥺✨</span>
+                </div>
+                <div class="ending-cat-avatar-wrap" id="endingCatAvatarWrap">
+                  <img src="../cat.png" class="ending-cat-img" id="endingCatImg" alt="Cute Hopeful Cat">
+                  <div class="ending-cat-eyes-sparkle" id="endingCatEyesSparkle">✨</div>
+                  <div class="ending-cat-tears" id="endingCatTears">
+                    <span class="tear tear-left">💧</span>
+                    <span class="tear tear-right">💧</span>
+                  </div>
+                  <div class="ending-cat-cheer-crown" id="endingCatCheerCrown">👑</div>
+                </div>
+              </div>
+
+              <!-- Buttons Area: YES & NO -->
+              <div class="ending-buttons-group" id="endingButtonsGroup">
+                <!-- YES Button -->
+                <button class="ending-btn ending-btn-yes" id="endingBtnYes" type="button" aria-label="Yes">
+                  <span class="yes-sparkles yes-sparkle-left">✨</span>
+                  <span class="yes-heart-pulse">💖</span>
+                  <span class="yes-btn-label" id="endingYesLabel">Yes 💖</span>
+                  <span class="yes-sparkles yes-sparkle-right">✨</span>
+                  <span class="btn-shine"></span>
+                </button>
+
+                <!-- NO Button -->
+                <button class="ending-btn ending-btn-no" id="endingBtnNo" type="button" aria-label="No">
+                  <span class="no-btn-label" id="endingNoLabel">No 🥺</span>
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Step 3: Celebration After YES -->
+          <div class="ending-celebration-section" id="endingCelebrationSection">
+            <div class="celebration-cheer-banner">
+              <div class="celebration-title-box">
+                <h3 class="celebration-main-title" id="celebrationMainTitle">Yayyy! I knew it! 🥳💖</h3>
+                <p class="celebration-subtitle" id="celebrationSubtitle">I'm so happy you liked it, Malkin 🌸</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Step 4: Redesigned "Wanna watch it again?" Magic Button -->
+          <div class="final-restart-container ending-magic-replay-wrapper" id="finalRestartContainer">
+            <!-- Peeking cat above the button -->
+            <div class="replay-cat-peeker">
+              <img src="../card_cats_top.png" class="replay-peeking-cat" alt="Waving Cat">
+              <span class="replay-cat-paw">🐾</span>
+            </div>
+
+            <!-- Magic Replay Button with preserved ID btnWannaWatchAgain -->
+            <button class="magic-replay-btn" id="btnWannaWatchAgain" type="button" title="Watch from the beginning!">
+              <div class="magic-orbit-sparkle orbit-1">✨</div>
+              <div class="magic-orbit-sparkle orbit-2">💫</div>
+              <div class="magic-orbit-sparkle orbit-3">⭐</div>
+              <span class="magic-replay-icon">🔁</span>
+              <span class="magic-replay-text" id="magicReplayText">Wanna watch it again? ✨</span>
+              <span class="magic-replay-heart">💖</span>
+              <div class="magic-shimmer-sweep"></div>
+            </button>
+
+            <!-- Heartfelt credit footer -->
+            <div class="ending-love-footer" id="endingLoveFooter">
+              <span class="love-footer-line">💌 Made with love for Malkin</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Confetti library for photo flip and candle blowout -->
+  <script src="../confetti.browser.min.js"></script>
+  <!-- Core Intro & Gallery Logic -->
+  <script src="script.js"></script>
+  <!-- Shared Cute Scroll-To-Top Component -->
+  <script src="../scroll-to-top.js"></script>
+</body>
+
+</html>
