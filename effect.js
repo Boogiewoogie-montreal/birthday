@@ -621,7 +621,9 @@ $('document').ready(function(){
 		if (messages.length === 0) {
 			messages = [
 				"Today is a very special day...",
-				"Wishing you endless smiles, joy, and happiness!",
+				"It's the birthday of my favorite person.",
+				"Out of everyone, you're the one I'm always happiest to see, talk to, and celebrate.",
+				"I hope this year gives you back all the love you give to everyone around you.",
 				"A very Happy Birthday Malkin! 🎉"
 			];
 		}

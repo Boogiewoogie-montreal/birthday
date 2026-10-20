@@ -964,9 +964,13 @@ const GALLERY_CONFIG = {
     "so many memories, and so many more ahead 💫"
   ],
   letter: {
-    heading: 'A letter for you, Malkin 💌',
-    body: `Dear Malkin,\n\nFrom the silly laughs to the quiet moments, having you in my life has been one of the greatest gifts. You bring warmth wherever you go, your kindness lights up every room, and your smile is genuinely contagious.\n\nI hope this birthday brings you as much happiness as you bring to everyone around you. Keep dreaming big, laughing loud, and being your wonderful, authentic self.\n\nAlways here for you,`,
-    signature: '- [My name]',
+    heading: 'A letter for my, Malkin 💌',
+    body: `Dear Malkin,\n\nFrom the silly laughs to the quiet moments,
+     having you in my life has been one of the greatest gifts. You bring warmth wherever you go, 
+     your kindness lights up every room, and your smile is genuinely contagious.\n\nI hope this
+      birthday brings you as much happiness as you bring to everyone around you. Keep dreaming big,
+       laughing loud, and being your wonderful, authentic self.\n\nAlways here for you,`,
+    signature: 'Your Neelendra',
     postageStamp: '🐱 Malkin',
     waxSeal: '💖'
   }
@@ -1249,7 +1253,7 @@ class ScrapbookGalleryManager {
             if (isFlipped) {
               v.pause();
             } else {
-              v.play().catch(() => {});
+              v.play().catch(() => { });
             }
           });
 
@@ -1332,7 +1336,7 @@ class ScrapbookGalleryManager {
               img.classList.remove('photo-developing');
               img.classList.add('developed');
               if (img.tagName === 'VIDEO' && img.paused) {
-                img.play().catch(() => {});
+                img.play().catch(() => { });
               }
             }, 180 + idx * 80);
           });
