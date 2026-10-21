@@ -1608,6 +1608,12 @@ html, body {
   white-space: pre-line;
 }
 
+.letter-body-text strong,
+.letter-body-text .letter-bold {
+  font-weight: 700;
+  color: #1a1512;
+}
+
 .letter-signature {
   font-family: 'Caveat', var(--font-crayon), cursive;
   font-size: clamp(22px, 3vw, 28px);

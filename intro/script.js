@@ -965,12 +965,33 @@ const GALLERY_CONFIG = {
   ],
   letter: {
     heading: 'A letter for my, Malkin 💌',
-    body: `Dear Malkin,\n\nFrom the silly laughs to the quiet moments,
-     having you in my life has been one of the greatest gifts. You bring warmth wherever you go, 
-     your kindness lights up every room, and your smile is genuinely contagious.\n\nI hope this
-      birthday brings you as much happiness as you bring to everyone around you. Keep dreaming big,
-       laughing loud, and being your wonderful, authentic self.\n\nAlways here for you,`,
-    signature: 'Your Neelendra',
+    body: `**My Dearest Ishu,** ❤️
+
+First of all, **Happy Birthday, my love!** ❤️
+
+Today is all about you, and before anything else, I want to wish you all the happiness, love, peace, and beautiful moments that you truly deserve. I hope this year brings you closer to your dreams, fills your life with beautiful memories, and gives you countless reasons to smile. You have always had such a special place in my heart, and I genuinely wish nothing but the best for you.
+
+It's been almost a year since we last spoke the way we used to, and I won't pretend that I don't miss it. I miss our conversations, our laughter, our silly little arguments, the way we shared everything, and how naturally we were once a part of each other's lives. Sometimes, it's not even the big memories that hurt the most. It's those little everyday moments when something happens, and my first thought is still to tell you about it.
+
+I know things haven't been easy between us. I've made mistakes, and there are things I genuinely wish I could have handled differently. Over this past year, I've tried my best to make things right, and even though we haven't found our way back to each other, my feelings for you haven't simply disappeared.
+
+And Ishu, there's something I've always wanted you to understand. I know there were moments when you felt I didn't take your stand, when you needed me beside you and perhaps couldn't feel my support. And I'm truly sorry for making you feel that way. But believe me, **there hasn't been a single day when my heart wasn't on your side.** Even during our worst arguments, even through all the misunderstandings and silence, I never stopped caring about you or wanting the best for you. Maybe I wasn't always able to show it in the way you needed, and maybe that's where I went wrong. But please never mistake my inability to express it for a lack of love or support. **I may not have stood beside you in every moment the way you deserved, but in my heart, I never stood against you.** And if life ever gives me another chance, I don't just want to tell you that I'm on your side. I want to make sure you never have to question it again.
+
+You know, Ishu, somewhere in my heart, I still carry the beautiful future we once imagined together. The little dreams, the milestones, celebrating each other's victories, being there through difficult days, and eventually building a life together. Even now, whenever something good happens in my life, there's a part of me that wishes I could share it with you. Because sometimes, a happy moment feels a little incomplete when the person you once imagined celebrating it with isn't there. I don't know what the future has planned for us, but **if life ever gives us another chance, I would love for us to build something beautiful again, with more understanding, patience, and love than before.**
+
+And Ishu, there's one more thing I want you to always remember. If there ever comes a day when your family hurts you, when your friends let you down, or when the world feels too heavy to carry alone, I hope you know that you can still find me. When your heart feels tired, when you're exhausted from being strong, or when the silence gets too loud and you just need someone to listen, you can reach out to me. I may not be able to fix everything, but I would gladly listen, sit beside you through the difficult moments, and remind you of the beautiful person you are. **You have never been a burden to me, Ishu, and you never will be.** Even if things between us are different now, my care for you has always been genuine.
+
+I'm not writing all of this expecting anything from you, especially not today. Your birthday should be filled with happiness, not the weight of our past. I just wanted to be honest about what you still mean to me. I would love for us to talk again someday, to understand each other better, and perhaps find our way back to the bond we once shared. But I also understand that some things need time, and I respect that. If someday you feel ready, even if it's just a simple hello, I would be happy to hear from you. There is no rush and no pressure.
+
+For now, I just hope you enjoy your special day, smile a little extra, laugh wholeheartedly, and feel surrounded by all the love and happiness you deserve.
+
+**Happy Birthday once again, Ishu. My love, my malkin.** ❤️
+
+No matter how much time passes or how life changes, the beautiful memories we've made will always mean something to me. And somewhere in my heart, there will always be a little hope that perhaps one day, we'll get to create new ones together.
+
+**With all my love,  
+Neelendra ❤️**`,
+    signature: '',
     postageStamp: '🐱 Malkin',
     waxSeal: '💖'
   }
@@ -1355,18 +1376,107 @@ class ScrapbookGalleryManager {
     items.forEach(el => observer.observe(el));
   }
 
-  typewriterText(element, text) {
-    element.textContent = '';
-    let i = 0;
-    const speed = 40;
-    function typeChar() {
-      if (i < text.length) {
-        element.textContent += text.charAt(i);
-        i++;
-        setTimeout(typeChar, speed);
+  parseMarkdownSegments(text) {
+    if (!text) return [];
+    const segments = [];
+    const regex = /\*\*(.+?)\*\*/gs;
+    let lastIndex = 0;
+    let match;
+    while ((match = regex.exec(text)) !== null) {
+      if (match.index > lastIndex) {
+        segments.push({ text: text.substring(lastIndex, match.index), isBold: false });
       }
+      segments.push({ text: match[1], isBold: true });
+      lastIndex = regex.lastIndex;
     }
-    typeChar();
+    if (lastIndex < text.length) {
+      segments.push({ text: text.substring(lastIndex), isBold: false });
+    }
+    return segments;
+  }
+
+  typewriterText(element, text) {
+    if (!element) return;
+    element.innerHTML = '';
+
+    const hasMarkdown = typeof text === 'string' && text.includes('**');
+    const segments = hasMarkdown ? this.parseMarkdownSegments(text) : [{ text, isBold: false }];
+
+    // Fast lively pacing: step by 3 chars every 12ms for long text, 1 char every 35ms for short text
+    const isLongText = text && text.length > 400;
+    const chunkSize = isLongText ? 3 : 1;
+    const speed = isLongText ? 12 : 35;
+
+    let segmentIdx = 0;
+    let charIdx = 0;
+    let currentContainer = null;
+    let timerId = null;
+    let isComplete = false;
+
+    const renderRemainingInstantly = () => {
+      if (isComplete) return;
+      isComplete = true;
+      if (timerId) clearTimeout(timerId);
+      element.innerHTML = '';
+      segments.forEach(seg => {
+        if (seg.isBold) {
+          const strong = document.createElement('strong');
+          strong.className = 'letter-bold';
+          strong.textContent = seg.text;
+          element.appendChild(strong);
+        } else {
+          element.appendChild(document.createTextNode(seg.text));
+        }
+      });
+    };
+
+    // Allow user to tap/click card to complete typing instantly
+    const clickTarget = element.closest('.letter-card-container') || element;
+    const onUserSkip = () => {
+      renderRemainingInstantly();
+      clickTarget.removeEventListener('click', onUserSkip);
+    };
+    clickTarget.addEventListener('click', onUserSkip, { once: true });
+
+    function step() {
+      if (isComplete) return;
+      if (segmentIdx >= segments.length) {
+        isComplete = true;
+        clickTarget.removeEventListener('click', onUserSkip);
+        return;
+      }
+
+      const currentSeg = segments[segmentIdx];
+      if (!currentContainer) {
+        if (currentSeg.isBold) {
+          currentContainer = document.createElement('strong');
+          currentContainer.className = 'letter-bold';
+          element.appendChild(currentContainer);
+        } else {
+          currentContainer = document.createTextNode('');
+          element.appendChild(currentContainer);
+        }
+      }
+
+      const nextSlice = currentSeg.text.substring(charIdx, charIdx + chunkSize);
+      charIdx += chunkSize;
+
+      if (currentSeg.isBold) {
+        currentContainer.textContent += nextSlice;
+      } else {
+        currentContainer.nodeValue += nextSlice;
+      }
+
+      if (charIdx >= currentSeg.text.length) {
+        segmentIdx++;
+        charIdx = 0;
+        currentContainer = null;
+      }
+
+      timerId = setTimeout(step, speed);
+    }
+
+    step();
   }
 
   initBackgroundParticles() {
@@ -1432,7 +1542,15 @@ class ScrapbookGalleryManager {
     if (!letterWrapper || !letterBody) return;
 
     if (letterHeading) letterHeading.textContent = this.config.letter.heading;
-    if (letterSig) letterSig.textContent = this.config.letter.signature;
+    if (letterSig) {
+      if (this.config.letter.signature) {
+        letterSig.textContent = this.config.letter.signature;
+        letterSig.style.display = '';
+      } else {
+        letterSig.textContent = '';
+        letterSig.style.display = 'none';
+      }
+    }
 
     const letterObserver = new IntersectionObserver((entries) => {
       entries.forEach(entry => {
@@ -1441,7 +1559,7 @@ class ScrapbookGalleryManager {
           this.typewriterText(letterBody, this.config.letter.body);
         }
       });
-    }, { threshold: 0.2 });
+    }, { threshold: 0.15 });
 
     letterObserver.observe(letterWrapper);
   }
