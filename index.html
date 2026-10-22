@@ -26,6 +26,7 @@
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css">
 	<link rel="stylesheet" type="text/css" href="stylesheet.css?v=birthday21">
 	<link rel="stylesheet" type="text/css" href="loading.css">
+	<link rel="stylesheet" type="text/css" href="passcode-gate.css">
 	<link rel="preconnect" href="https://fonts.googleapis.com">
 	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 	<link
@@ -37,7 +38,89 @@
 </head>
 
 <body class="lock-scroll">
-	<div id="main_slider">
+	<!-- =====================================================================
+	     CUTE & SECURE PASSCODE GATE (Hides entire website until authenticated)
+	     ===================================================================== -->
+	<div id="passcode_gate" class="passcode-gate-overlay">
+		<!-- Floating Cute Background Emojis -->
+		<div class="gate-floating-bg" aria-hidden="true">
+			<span class="gate-drift gd-1">💖</span>
+			<span class="gate-drift gd-2">⭐</span>
+			<span class="gate-drift gd-3">✨</span>
+			<span class="gate-drift gd-4">🌸</span>
+			<span class="gate-drift gd-5">🎈</span>
+			<span class="gate-drift gd-6">💕</span>
+			<span class="gate-drift gd-7">🐾</span>
+			<span class="gate-drift gd-8">🌷</span>
+		</div>
+
+		<!-- Centered Cute Login Card -->
+		<div class="passcode-card-wrap">
+			<div class="passcode-card" id="passcode_card">
+				<!-- Peeking Kittens Header -->
+				<div class="passcode-cats-header">
+					<img src="card_cats_top.png" class="passcode-cats-img" alt="Cute Kittens Peeking">
+				</div>
+
+				<!-- Floating Sparkles around Card -->
+				<span class="passcode-decor-item decor-star-tl" aria-hidden="true">✨</span>
+				<span class="passcode-decor-item decor-heart-tr" aria-hidden="true">💖</span>
+				<span class="passcode-decor-item decor-paw-bl" aria-hidden="true">🐾</span>
+				<span class="passcode-decor-item decor-star-br" aria-hidden="true">⭐</span>
+
+				<!-- Cute Badge -->
+				<div class="passcode-badge">
+					<span class="badge-icon">🎂</span>
+					<span class="badge-text">Private Birthday Surprise</span>
+				</div>
+
+				<!-- Heading & Subtitle -->
+				<h2 class="passcode-title">Secret Passcode 🔐</h2>
+				<p class="passcode-subtitle">
+					Enter the secret 4-digit code to open Malkin's birthday surprise! 💕
+				</p>
+
+				<!-- Passcode Form -->
+				<form id="passcode_form" class="passcode-form" autocomplete="off" onsubmit="return false;">
+					<div class="passcode-input-container">
+						<span class="input-icon-prefix">🔑</span>
+						<input 
+							type="password" 
+							id="passcode_input" 
+							class="passcode-input" 
+							placeholder="Enter passcode..." 
+							maxlength="10" 
+							pattern="[0-9]*"
+							inputmode="numeric"
+							autocomplete="off"
+							required
+							autofocus
+						>
+						<button type="button" id="btn_toggle_passcode" class="btn-toggle-eye" title="Show Passcode" aria-label="Toggle passcode visibility">
+							<span id="eye_icon">👁️</span>
+						</button>
+					</div>
+
+					<!-- Cute Error Message Box -->
+					<div id="passcode_message" class="passcode-feedback-msg" role="alert" aria-live="polite"></div>
+
+					<!-- Cute Submit Button -->
+					<button type="submit" id="btn_passcode_submit" class="passcode-submit-btn">
+						<span class="btn-paw">🐾</span>
+						<span class="btn-text">Submit</span>
+						<span class="btn-sparkle">💖</span>
+					</button>
+				</form>
+
+				<div class="passcode-footer-hint">
+					<span class="hint-dot"></span> Only for Malkin 🐱✨
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!-- MAIN WEBSITE CONTENT (Hidden until passcode is verified) -->
+	<div id="main_slider" class="is-locked" style="display: none; opacity: 0;">
 		<!-- SECTION 1: FRONT BIRTHDAY PAGE (Intact Design) -->
 		<div id="section_front_page">
 			<!-- Top Controls: Mute/Unmute Button & Revisit Forward Button -->
@@ -299,6 +382,7 @@
 <script src="tsparticles.ribbons.bundle.min.js"></script>
 <script src="effect.js?v=birthday18"></script>
 <script src="scroll-to-top.js"></script>
+<script src="passcode-gate.js"></script>
 <script>
 	(function (i, s, o, g, r, a, m) {
 		i['GoogleAnalyticsObject'] = r; i[r] = i[r] || function () {

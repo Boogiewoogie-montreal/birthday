@@ -1,0 +1,433 @@
+/* ==========================================================================
+   CUTE & SECURE PASSCODE GATE STYLES
+   - Cozy pastel cream/peach aesthetic matching the birthday card
+   - Centered card with peeking cats header, hand-drawn dashed border
+   - Floating cute doodles (hearts, stars, sparkles, paws)
+   - Gentle error shake and smooth success fade transition
+   ========================================================================== */
+
+/* Hidden Main Slider on Initial Load */
+#main_slider.is-locked {
+  display: none !important;
+  opacity: 0 !important;
+}
+
+/* Fullscreen Passcode Gate Overlay */
+.passcode-gate-overlay {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  min-height: 100vh;
+  z-index: 9999999;
+  background: radial-gradient(circle at 50% 35%, #FFFDF9 0%, #FDF3E5 55%, #FCE8D8 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  box-sizing: border-box;
+  overflow: hidden;
+  font-family: 'Patrick Hand', 'Signika', 'Gaegu', cursive, sans-serif;
+  opacity: 1;
+  visibility: visible;
+  transition: opacity 0.5s cubic-bezier(0.4, 0, 0.2, 1), visibility 0.5s ease;
+}
+
+/* Smooth Fadeout & Scale on Unlock */
+.passcode-gate-overlay.unlocked {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.passcode-gate-overlay.unlocked .passcode-card {
+  transform: scale(0.9) translateY(-25px);
+  opacity: 0;
+  transition: transform 0.45s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.4s ease;
+}
+
+/* Floating Cute Background Icons */
+.gate-floating-bg {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  overflow: hidden;
+  z-index: 1;
+}
+
+.gate-drift {
+  position: absolute;
+  user-select: none;
+  opacity: 0.65;
+  filter: drop-shadow(0 2px 4px rgba(217, 75, 94, 0.12));
+  animation: gateFloatDrift 7s ease-in-out infinite alternate;
+}
+
+.gd-1  { top: 10%; left: 8%;   font-size: 26px; animation-duration: 6.5s; animation-delay: 0s; }
+.gd-2  { top: 18%; right: 12%; font-size: 24px; animation-duration: 7.2s; animation-delay: 1s; }
+.gd-3  { top: 48%; left: 6%;   font-size: 28px; animation-duration: 8.0s; animation-delay: 0.5s; }
+.gd-4  { top: 78%; left: 14%;  font-size: 30px; animation-duration: 6.8s; animation-delay: 1.8s; }
+.gd-5  { top: 72%; right: 10%; font-size: 28px; animation-duration: 7.5s; animation-delay: 0.8s; }
+.gd-6  { top: 35%; right: 6%;  font-size: 24px; animation-duration: 6.2s; animation-delay: 1.4s; }
+.gd-7  { top: 88%; left: 45%;  font-size: 22px; animation-duration: 8.2s; animation-delay: 2.2s; }
+.gd-8  { top: 6%;  left: 48%;  font-size: 24px; animation-duration: 7.0s; animation-delay: 1.2s; }
+
+@keyframes gateFloatDrift {
+  0% {
+    transform: translateY(0px) rotate(0deg) scale(1);
+  }
+  50% {
+    transform: translateY(-16px) rotate(8deg) scale(1.08);
+  }
+  100% {
+    transform: translateY(-8px) rotate(-6deg) scale(0.96);
+  }
+}
+
+/* Centered Card Wrapper */
+.passcode-card-wrap {
+  position: relative;
+  z-index: 10;
+  width: 100%;
+  max-width: 440px;
+  display: flex;
+  justify-content: center;
+}
+
+/* The Cute Card */
+.passcode-card {
+  position: relative;
+  width: 100%;
+  background: #FFFDF9;
+  border: 3.2px dashed #5C3D2E;
+  border-radius: 28px 24px 30px 22px;
+  padding: clamp(38px, 5vh, 46px) clamp(20px, 4vw, 32px) clamp(24px, 3vh, 30px);
+  box-shadow: 0 20px 42px rgba(92, 61, 46, 0.16), 0 6px 14px rgba(92, 61, 46, 0.08);
+  text-align: center;
+  box-sizing: border-box;
+  animation: cardBounceIn 0.55s cubic-bezier(0.34, 1.56, 0.64, 1);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+@keyframes cardBounceIn {
+  0% {
+    opacity: 0;
+    transform: scale(0.82) translateY(35px);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+/* Peeking Cats on Top Header */
+.passcode-cats-header {
+  position: absolute;
+  top: -52px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: clamp(140px, 32vw, 190px);
+  pointer-events: none;
+  z-index: 12;
+}
+
+.passcode-cats-img {
+  width: 100%;
+  height: auto;
+  display: block;
+  filter: drop-shadow(0 4px 6px rgba(45, 42, 38, 0.15));
+}
+
+/* Floating Corner Sparkles & Hearts around the Card */
+.passcode-decor-item {
+  position: absolute;
+  font-size: clamp(20px, 3vw, 26px);
+  pointer-events: none;
+  user-select: none;
+  animation: floatDecorBob 2.6s ease-in-out infinite alternate;
+}
+
+.decor-star-tl {
+  top: -12px;
+  left: 14px;
+  animation-delay: 0s;
+}
+
+.decor-heart-tr {
+  top: -14px;
+  right: 16px;
+  animation-delay: 0.7s;
+}
+
+.decor-paw-bl {
+  bottom: -12px;
+  left: 18px;
+  animation-delay: 1.4s;
+}
+
+.decor-star-br {
+  bottom: -12px;
+  right: 18px;
+  animation-delay: 2.1s;
+}
+
+@keyframes floatDecorBob {
+  0%   { transform: translateY(0) scale(1) rotate(0deg); }
+  100% { transform: translateY(-7px) scale(1.15) rotate(10deg); }
+}
+
+/* Cute Badge */
+.passcode-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: #FFF1E6;
+  border: 1.8px solid #E8A598;
+  border-radius: 20px;
+  padding: 4px 14px;
+  font-size: clamp(13px, 2vw, 15px);
+  font-weight: 700;
+  color: #D94B5E;
+  margin-bottom: 10px;
+  box-shadow: 0 2px 6px rgba(217, 75, 94, 0.08);
+}
+
+.badge-icon {
+  font-size: 1.1em;
+}
+
+/* Card Heading & Subtitle */
+.passcode-title {
+  font-family: 'Patrick Hand', 'Signika', cursive, sans-serif;
+  font-size: clamp(26px, 4.2vw, 32px);
+  font-weight: 700;
+  color: #D94B5E;
+  margin: 0 0 8px 0;
+  line-height: 1.2;
+  text-shadow: 1px 1px 0 rgba(217, 75, 94, 0.1);
+}
+
+.passcode-subtitle {
+  font-family: 'Patrick Hand', 'Signika', cursive, sans-serif;
+  font-size: clamp(16px, 2.6vw, 19px);
+  color: #5C4B44;
+  margin: 0 0 20px 0;
+  line-height: 1.35;
+}
+
+/* Form & Input Container */
+.passcode-form {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.passcode-input-container {
+  position: relative;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.input-icon-prefix {
+  position: absolute;
+  left: 16px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 20px;
+  pointer-events: none;
+  opacity: 0.85;
+}
+
+.passcode-input {
+  width: 100%;
+  height: 52px;
+  border: 2.6px solid #D9B59E;
+  background: #FFF9F2;
+  border-radius: 26px;
+  padding: 0 48px 0 46px;
+  font-family: 'Patrick Hand', 'Signika', cursive, sans-serif;
+  font-size: clamp(20px, 3.2vw, 24px);
+  font-weight: 700;
+  letter-spacing: 3px;
+  text-align: center;
+  color: #2D2A26;
+  outline: none;
+  box-sizing: border-box;
+  transition: all 0.2s ease;
+  box-shadow: inset 0 2px 4px rgba(92, 61, 46, 0.06);
+}
+
+.passcode-input::placeholder {
+  color: #BA9D8F;
+  letter-spacing: 1px;
+  font-weight: 400;
+  font-size: clamp(16px, 2.5vw, 18px);
+}
+
+.passcode-input:focus {
+  border-color: #FF5E7E;
+  background: #FFFFFF;
+  box-shadow: 0 0 0 4px rgba(255, 94, 126, 0.18), inset 0 1px 3px rgba(0, 0, 0, 0.04);
+  transform: translateY(-1px);
+}
+
+/* Eye Toggle Button */
+.btn-toggle-eye {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  font-size: 19px;
+  cursor: pointer;
+  padding: 6px;
+  line-height: 1;
+  border-radius: 50%;
+  transition: transform 0.15s ease, opacity 0.15s ease;
+  opacity: 0.75;
+  outline: none;
+}
+
+.btn-toggle-eye:hover {
+  transform: translateY(-50%) scale(1.15);
+  opacity: 1;
+}
+
+/* Cute Error Message */
+.passcode-feedback-msg {
+  min-height: 24px;
+  margin: 10px 0 4px 0;
+  font-family: 'Patrick Hand', 'Signika', cursive, sans-serif;
+  font-size: clamp(16px, 2.5vw, 18px);
+  font-weight: 700;
+  line-height: 1.3;
+  transition: all 0.25s ease;
+}
+
+.passcode-feedback-msg.is-error {
+  color: #D92546;
+  background: #FFE8EC;
+  border: 1.8px dashed #FFA4B4;
+  border-radius: 14px;
+  padding: 6px 14px;
+  animation: cuteMsgPop 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.passcode-feedback-msg.is-info {
+  color: #E26D14;
+  background: #FFF3E6;
+  border: 1.8px dashed #FFBE85;
+  border-radius: 14px;
+  padding: 6px 14px;
+}
+
+@keyframes cuteMsgPop {
+  0%   { opacity: 0; transform: scale(0.9) translateY(4px); }
+  100% { opacity: 1; transform: scale(1) translateY(0); }
+}
+
+/* Cute Shake Error Animation on Card */
+.shake-error {
+  animation: cuteCardShake 0.45s cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
+}
+
+.shake-error .passcode-input {
+  border-color: #FF476E !important;
+  background: #FFF0F2 !important;
+}
+
+@keyframes cuteCardShake {
+  0%, 100% { transform: translateX(0); }
+  15% { transform: translateX(-9px) rotate(-1.5deg); }
+  30% { transform: translateX(8px) rotate(1.2deg); }
+  50% { transform: translateX(-6px) rotate(-0.8deg); }
+  70% { transform: translateX(5px) rotate(0.6deg); }
+  85% { transform: translateX(-2px) rotate(-0.3deg); }
+}
+
+/* Cute Submit Button */
+.passcode-submit-btn {
+  width: 100%;
+  height: 52px;
+  margin-top: 10px;
+  background: #FFD23F;
+  color: #2D2A26;
+  border: 2.8px solid #2D2A26;
+  border-radius: 30px;
+  padding: 0 24px;
+  font-family: 'Patrick Hand', 'Signika', cursive, sans-serif;
+  font-size: clamp(21px, 3.2vw, 25px);
+  font-weight: 700;
+  cursor: pointer;
+  box-shadow: 3px 4px 0 #2D2A26;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  transition: transform 0.12s ease, box-shadow 0.12s ease, background 0.15s ease;
+  outline: none;
+  box-sizing: border-box;
+}
+
+.passcode-submit-btn:hover:not(:disabled) {
+  background: #FFC048;
+  transform: translateY(-2px);
+  box-shadow: 4px 6px 0 #2D2A26;
+}
+
+.passcode-submit-btn:active:not(:disabled) {
+  transform: translateY(2px);
+  box-shadow: 1px 2px 0 #2D2A26;
+}
+
+.passcode-submit-btn:disabled {
+  cursor: wait;
+  opacity: 0.85;
+  transform: none;
+}
+
+.passcode-submit-btn.btn-success {
+  background: #8AE99C !important;
+  color: #17421F !important;
+}
+
+.btn-paw {
+  font-size: 1.15em;
+}
+
+.btn-sparkle {
+  font-size: 1em;
+}
+
+/* Footer Hint */
+.passcode-footer-hint {
+  margin-top: 16px;
+  font-family: 'Patrick Hand', 'Signika', cursive, sans-serif;
+  font-size: clamp(14px, 2vw, 16px);
+  color: #8C7A70;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+}
+
+.hint-dot {
+  width: 6px;
+  height: 6px;
+  background: #FF9AA2;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+/* Responsive adjustments */
+@media (max-width: 480px) {
+  .passcode-card {
+    padding: 38px 18px 20px 18px;
+    border-radius: 22px;
+  }
+  .passcode-cats-header {
+    top: -46px;
+  }
+}
