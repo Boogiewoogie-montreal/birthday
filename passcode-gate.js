@@ -7,7 +7,7 @@
  *    Paste your Google Apps Script Web App URL below between the quotes.
  *    See deployment instructions in README / response.
  */
-const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbz9sxmvmsHsdWESfqIU5c-oNfnAQSR7nr9lVbOY2FS3Zz8VCrn9s9KQSNrZpdiSA8A8Uw/exec";
+const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwB50PFHJfvXbtWCZpxorjEbsTPTG2Xfu8fKZhL3Z1En2_FcnXoX1ITXJ2wFWvDzg0H/exec";
 
 /**
  * 2. SECRET PASSCODE CONFIGURATION:
