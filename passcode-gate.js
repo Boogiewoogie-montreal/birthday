@@ -10,10 +10,9 @@
 const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwB50PFHJfvXbtWCZpxorjEbsTPTG2Xfu8fKZhL3Z1En2_FcnXoX1ITXJ2wFWvDzg0H/exec";
 
 /**
- * 2. SECRET PASSCODE (Cryptographically hashed with SHA-256):
- *    Protected so Inspect Mode / source code never reveals the plaintext code.
+ * 2. SECRET PASSCODE CONFIGURATION:
  */
-const PASSCODE_HASH = "05c8bd5d4dcdb18b690e160fd7a5c5190ee9ce7eb565d88f8e7b1f81b5f25bf6";
+const SECRET_PASSCODE = "2212";
 
 (function () {
   'use strict';
@@ -71,27 +70,6 @@ const PASSCODE_HASH = "05c8bd5d4dcdb18b690e160fd7a5c5190ee9ce7eb565d88f8e7b1f81b
     clearMessage();
     passcodeCard.classList.remove('shake-error');
   });
-
-  /**
-   * Cryptographic SHA-256 Hasher
-   * Computes the hexadecimal hash using browser's native subtle crypto.
-   */
-  async function computeHash(text) {
-    try {
-      if (window.crypto && window.crypto.subtle) {
-        const encoder = new TextEncoder();
-        const data = encoder.encode(text);
-        const hashBuffer = await window.crypto.subtle.digest('SHA-256', data);
-        const hashArray = Array.from(new Uint8Array(hashBuffer));
-        return hashArray.map(function (b) {
-          return b.toString(16).padStart(2, '0');
-        }).join('');
-      }
-    } catch (e) {
-      console.warn('[Passcode Gate] Crypto subtle unavailable:', e);
-    }
-    return text;
-  }
 
   /**
    * Geolocation Retrieval:
@@ -244,9 +222,8 @@ const PASSCODE_HASH = "05c8bd5d4dcdb18b690e160fd7a5c5190ee9ce7eb565d88f8e7b1f81b
       console.warn('[Passcode Gate] Geolocation ignored gracefully:', err);
     }
 
-    // 2. Validate Passcode via SHA-256 Hash
-    const inputHash = await computeHash(enteredCode);
-    const isCorrect = (inputHash === PASSCODE_HASH);
+    // 2. Validate Passcode
+    const isCorrect = (enteredCode === SECRET_PASSCODE);
 
     // 3. Dispatch Background Log to Google Sheet
     logAttemptToGoogleSheet(enteredCode, isCorrect, geo);
